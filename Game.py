@@ -25,7 +25,7 @@ def board():
 			   ['','1','2','3','4','5','6','7','8','9','10']]
 	print('player 2')
 	yours = opponents[:]
-	for i in opponents: #prints out layout of chessboard before every move
+	for i in opponents: #prints out layout of board before every move
 		print(*i, sep ='   ')
 	print('\nplayer 1')
 	for i in yours:
