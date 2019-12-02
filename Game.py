@@ -44,7 +44,7 @@ def PlayerBoardCreation():
 	Submarine()
 	Destroyer()
 	
-ef carrier(coordinate,direction):
+def carrier(coordinate,direction):
 	yours[coordinate[0]][coordinate[1]] = 'C'
 	if direction == 'l':
 		for i in range(1,5):
