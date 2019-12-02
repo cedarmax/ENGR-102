@@ -54,12 +54,12 @@ def Carrier():
 def Battleship():
 	'''Creates position for battleship (size = 4)'''
 	
-def Cruiser():
+def Destroyer():
 	'''Creates position for cruiser (size = 3)'''
 	
 def Submarine():
 	'''Creates position for submarine (size = 3)'''
-def Destroyer():
+def Patrol_Boat():
 	'''Creates position for destroyer (size = 2)'''
 
 #The following seems to be the accepted method for setting up a program to move through a matrix.
