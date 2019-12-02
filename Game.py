@@ -48,19 +48,28 @@ def PlayerBoardCreation():
 	Submarine()
 	Destroyer()
 	
-def Carrier():
+def Carrier(x1,y1,x2,y2):
 	'''Creates position for carrier (size = 5)'''
+	#(x1, y1) is beginning, (x2, y2) is end of the ship
 	
-def Battleship():
+def Battleship(x1,y1,x2,y2):
 	'''Creates position for battleship (size = 4)'''
+	#(x1, y1) is beginning, (x2, y2) is end of the ship
 	
-def Destroyer():
+def Destroyer(x1,y1,x2,y2):
 	'''Creates position for cruiser (size = 3)'''
+	#(x1, y1) is beginning, (x2, y2) is end of the ship
 	
-def Submarine():
+def Submarine(x1,y1,x2,y2):
 	'''Creates position for submarine (size = 3)'''
-def Patrol_Boat():
+	#(x1, y1) is beginning, (x2, y2) is end of the ship
+	
+def Patrol_Boat(x1,y1,x2,y2):
 	'''Creates position for destroyer (size = 2)'''
+	#(x1, y1) is beginning, (x2, y2) is end of the ship
+	
+def moves():
+	'''This function will initiate each move'''
 
 #The following seems to be the accepted method for setting up a program to move through a matrix.
 '''
