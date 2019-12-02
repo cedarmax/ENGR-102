@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
 # By submitting this assignment, I agree to the following:
 #  “Aggies do not lie, cheat, or steal, or tolerate those who do”
 #  “I have not given or received any unauthorized aid on this assignment”
@@ -12,7 +10,6 @@
 # Assignment:	Game project
 # Date:		    01 12 2019
 
-"""
 import random as r
 def board():
 	opponents =[['a','.','.','.','.','.','.','.','.','.','.'],
