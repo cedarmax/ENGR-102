@@ -12,6 +12,7 @@
 
 import random as r
 import numpy as np
+########################################################################################### Players 1 board creation
 opponents =[['.','.','.','.','.','.','.','.','.','.'],
            ['.','.','.','.','.','.','.','.','.','.'],
            ['.','.','.','.','.','.','.','.','.','.'],
@@ -21,106 +22,92 @@ opponents =[['.','.','.','.','.','.','.','.','.','.'],
            ['.','.','.','.','.','.','.','.','.','.'],
            ['.','.','.','.','.','.','.','.','.','.'],
            ['.','.','.','.','.','.','.','.','.','.'],
-	   ['.','.','.','.','.','.','.','.','.','.']]
+		   ['.','.','.','.','.','.','.','.','.','.']]
 print('player 2')
-yours = opponents[:]
+player_1 = opponents[:]
 for i in opponents: #prints out layout of chessboard before every move
 	print(*i, sep ='  ')
 print('player 1')
-for i in yours:
+for i in player_1:
 	print(*i, sep = '  ')		
 
-def rules():
-	'''This function will be run every time a move is made, checking if the move is valid'''
-
-def CPUBoardCreation():
-	'''This function will create the board if the player chooses to play the computer.'''
-	
-def PlayerBoardCreation():
-	'''This function will prompt the player to place his five pieces.'''
-	Carrier()
-	Battleship()
-	Cruiser()
-	Submarine()
-	Destroyer()
-	
 def carrier(coordinate,direction):
-	yours[coordinate[0]][coordinate[1]] = 'C'
+	player_1[coordinate[0]][coordinate[1]] = 'C'
 	if direction == 'l':
 		for i in range(1,5):
-			yours[coordinate[0]][coordinate[1]-i] = 'C'
+			player_1[coordinate[0]][coordinate[1]-i] = 'C'
 	elif direction == 'r':
 		for i in range(1,5):
-			yours[coordinate[0]][coordinate[1]+i] = 'C'
+			player_1[coordinate[0]][coordinate[1]+i] = 'C'
 	elif direction == 'd':
 		for i in range(1,5):
-			yours[coordinate[0]+i][coordinate[1]] = 'C'
+			player_1[coordinate[0]+i][coordinate[1]] = 'C'
 	elif direction == 'u':
 		for i in range(1,5):
-			yours[coordinate[0]-i][coordinate[1]] = 'C'
+			player_1[coordinate[0]-i][coordinate[1]] = 'C'
 
 def battleship(coordinate,direction):
-	yours[coordinate[0]][coordinate[1]] = 'B'
+	player_1[coordinate[0]][coordinate[1]] = 'B'
 	if direction == 'l':
 		for i in range(1,4):
-			yours[coordinate[0]][coordinate[1]-i] = 'B'
+			player_1[coordinate[0]][coordinate[1]-i] = 'B'
 	elif direction == 'r':
 		for i in range(1,4):
-			yours[coordinate[0]][coordinate[1]+i] = 'B'
+			player_1[coordinate[0]][coordinate[1]+i] = 'B'
 	elif direction == 'd':
 		for i in range(1,4):
-			yours[coordinate[0]+i][coordinate[1]] = 'B'
+			player_1[coordinate[0]+i][coordinate[1]] = 'B'
 	elif direction == 'u':
 		for i in range(1,4):
-			yours[coordinate[0]-i][coordinate[1]] = 'B'
+			player_1[coordinate[0]-i][coordinate[1]] = 'B'
 
 def destroyer(coordinate,direction):
-	yours[coordinate[0]][coordinate[1]] = 'D'
+	player_1[coordinate[0]][coordinate[1]] = 'D'
 	if direction == 'l':
 		for i in range(1,3):
-			yours[coordinate[0]][coordinate[1]-i] = 'D'
+			player_1[coordinate[0]][coordinate[1]-i] = 'D'
 	elif direction == 'r':
 		for i in range(1,3):
-			yours[coordinate[0]][coordinate[1]+i] = 'D'
+			player_1[coordinate[0]][coordinate[1]+i] = 'D'
 	elif direction == 'd':
 		for i in range(1,3):
-			yours[coordinate[0]+i][coordinate[1]] = 'D'
+			player_1[coordinate[0]+i][coordinate[1]] = 'D'
 	elif direction == 'u':
 		for i in range(1,3):
-			yours[coordinate[0]-i][coordinate[1]] = 'D'
+			player_1[coordinate[0]-i][coordinate[1]] = 'D'
 
 def submarine(coordinate,direction):
-	yours[coordinate[0]][coordinate[1]] = 'C'
+	player_1[coordinate[0]][coordinate[1]] = 'C'
 	if direction == 'l':
 		for i in range(1,3):
-			yours[coordinate[0]][coordinate[1]-i] = 'C'
+			player_1[coordinate[0]][coordinate[1]-i] = 'C'
 	elif direction == 'r':
 		for i in range(1,3):
-			yours[coordinate[0]][coordinate[1]+i] = 'C'
+			player_1[coordinate[0]][coordinate[1]+i] = 'C'
 	elif direction == 'd':
 		for i in range(1,3):
-			yours[coordinate[0]+i][coordinate[1]] = 'C'
+			player_1[coordinate[0]+i][coordinate[1]] = 'C'
 	elif direction == 'u':
 		for i in range(1,3):
-			yours[coordinate[0]-i][coordinate[1]] = 'C'
+			player_1[coordinate[0]-i][coordinate[1]] = 'C'
 
 def patrol_boat(coordinate,direction):
-	yours[coordinate[0]][coordinate[1]] = 'P'
+	player_1[coordinate[0]][coordinate[1]] = 'P'
 	if direction == 'l':
-		yours[coordinate[0]][coordinate[1]-1] = 'P'
+		player_1[coordinate[0]][coordinate[1]-1] = 'P'
 	elif direction == 'r':
-		yours[coordinate[0]][coordinate[1]+1] = 'P'
+		player_1[coordinate[0]][coordinate[1]+1] = 'P'
 	elif direction == 'd':
-		yours[coordinate[0]+1][coordinate[1]] = 'P'
+		player_1[coordinate[0]+1][coordinate[1]] = 'P'
 	elif direction == 'u':
-		yours[coordinate[0]-1][coordinate[1]] = 'P'
+		player_1[coordinate[0]-1][coordinate[1]] = 'P'
 
 
 coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
 direction = input('Enter the direction of your piece: ')
 carrier(coordinate,direction)
 coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
-direction = input('Enter the direction of your piece: ')
+direction = input('Enter the direction of your piece choices(u,d,l,r): ')
 battleship(coordinate,direction)
 coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
 direction = input('Enter the direction of your piece: ')
@@ -133,10 +120,145 @@ direction = input('Enter the direction of your piece: ')
 submarine(coordinate,direction)
 
 
-for i in yours:
+for i in player_1:
 	print(*i,sep='  ')
-def moves():
-	'''This function will initiate each move'''
+
+
+
+################################################################################################################### player 2 board creation
+
+opponents_1 =[['.','.','.','.','.','.','.','.','.','.'],
+              ['.','.','.','.','.','.','.','.','.','.'],
+              ['.','.','.','.','.','.','.','.','.','.'],
+			  ['.','.','.','.','.','.','.','.','.','.'],
+              ['.','.','.','.','.','.','.','.','.','.'],
+              ['.','.','.','.','.','.','.','.','.','.'],
+              ['.','.','.','.','.','.','.','.','.','.'],
+              ['.','.','.','.','.','.','.','.','.','.'],
+              ['.','.','.','.','.','.','.','.','.','.'],
+		      ['.','.','.','.','.','.','.','.','.','.']]
+print('player 1')
+player_2 = opponents_1[:]
+for i in opponents_1: #prints out layout of chessboard before every move
+	print(*i, sep ='  ')
+print('player 2')
+for i in player_2:
+	print(*i, sep = '  ')		
+
+def carrier(coordinate,direction):
+	player_2[coordinate[0]][coordinate[1]] = 'C'
+	if direction == 'l':
+		for i in range(1,5):
+			player_2[coordinate[0]][coordinate[1]-i] = 'C'
+	elif direction == 'r':
+		for i in range(1,5):
+			player_2[coordinate[0]][coordinate[1]+i] = 'C'
+	elif direction == 'd':
+		for i in range(1,5):
+			player_2[coordinate[0]+i][coordinate[1]] = 'C'
+	elif direction == 'u':
+		for i in range(1,5):
+			player_2[coordinate[0]-i][coordinate[1]] = 'C'
+
+def battleship(coordinate,direction):
+	player_2[coordinate[0]][coordinate[1]] = 'B'
+	if direction == 'l':
+		for i in range(1,4):
+			player_2[coordinate[0]][coordinate[1]-i] = 'B'
+	elif direction == 'r':
+		for i in range(1,4):
+			player_2[coordinate[0]][coordinate[1]+i] = 'B'
+	elif direction == 'd':
+		for i in range(1,4):
+			player_2[coordinate[0]+i][coordinate[1]] = 'B'
+	elif direction == 'u':
+		for i in range(1,4):
+			player_2[coordinate[0]-i][coordinate[1]] = 'B'
+
+def destroyer(coordinate,direction):
+	player_2[coordinate[0]][coordinate[1]] = 'D'
+	if direction == 'l':
+		for i in range(1,3):
+			player_2[coordinate[0]][coordinate[1]-i] = 'D'
+	elif direction == 'r':
+		for i in range(1,3):
+			player_2[coordinate[0]][coordinate[1]+i] = 'D'
+	elif direction == 'd':
+		for i in range(1,3):
+			player_2[coordinate[0]+i][coordinate[1]] = 'D'
+	elif direction == 'u':
+		for i in range(1,3):
+			player_2[coordinate[0]-i][coordinate[1]] = 'D'
+
+def submarine(coordinate,direction):
+	player_2[coordinate[0]][coordinate[1]] = 'C'
+	if direction == 'l':
+		for i in range(1,3):
+			player_2[coordinate[0]][coordinate[1]-i] = 'C'
+	elif direction == 'r':
+		for i in range(1,3):
+			player_2[coordinate[0]][coordinate[1]+i] = 'C'
+	elif direction == 'd':
+		for i in range(1,3):
+			player_2[coordinate[0]+i][coordinate[1]] = 'C'
+	elif direction == 'u':
+		for i in range(1,3):
+			player_2[coordinate[0]-i][coordinate[1]] = 'C'
+
+def patrol_boat(coordinate,direction):
+	player_2[coordinate[0]][coordinate[1]] = 'P'
+	if direction == 'l':
+		player_2[coordinate[0]][coordinate[1]-1] = 'P'
+	elif direction == 'r':
+		player_2[coordinate[0]][coordinate[1]+1] = 'P'
+	elif direction == 'd':
+		player_2[coordinate[0]+1][coordinate[1]] = 'P'
+	elif direction == 'u':
+		player_2[coordinate[0]-1][coordinate[1]] = 'P'
+
+
+coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
+direction = input('Enter the direction of your piece: ')
+carrier(coordinate,direction)
+coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
+direction = input('Enter the direction of your piece choices(u,d,l,r): ')
+battleship(coordinate,direction)
+coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
+direction = input('Enter the direction of your piece choices(u,d,l,r): ')
+destroyer(coordinate,direction)
+coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
+direction = input('Enter the direction of your piece choices(u,d,l,r): ')
+patrol_boat(coordinate,direction)
+coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
+direction = input('Enter the direction of your piece choices(u,d,l,r): ')
+submarine(coordinate,direction)
+print('Player_2')
+for i in player_2:
+	print(*i,sep='  ')
+
+
+
+def moves_1(coord):  # for when player 1 does his moves
+	if player_2[coord[0]][coord[1]] != '.' and player_2[coord[0]][coord[1]]!= 'O' or player_2[coord[0]][coord[1]] != 'X':
+		opponents[coord[0]][coord[1]] = 'X' 
+		player_2[coord[0]][coord[1]] = 'X'
+	elif player_2[coord[0]][coord[1]] == '.' and player_2[coord[0]][coord[1]] != 'O' or player_2[coord[0]][coord[1]] != 'X':
+		player_2[coord[0]][coord[1]] = 'O'
+		opponents[coord[0]][coord[1]] = 'O'
+	else:
+		return False
+		
+
+def moves_2(coord):  # for when player 2 does his moves
+	if player_1[coord[0]][coord[1]] != '.' and player_1[coord[0]][coord[1]]!= 'O' or player_1[coord[0]][coord[1]] != 'X':
+		opponents[coord[0]][coord[1]] = 'X' 
+		player_1[coord[0]][coord[1]] = 'X'
+	elif player_1[coord[0]][coord[1]] == '.' and player_1[coord[0]][coord[1]] != 'O' or player_1[coord[0]][coord[1]] != 'X':
+		player_1[coord[0]][coord[1]] = 'O'
+		opponents[coord[0]][coord[1]] = 'O'
+	else:
+		return False
+		
 
 #The following seems to be the accepted method for setting up a program to move through a matrix.
 '''
