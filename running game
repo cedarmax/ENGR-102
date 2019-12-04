@@ -329,7 +329,11 @@ for i in range(1,203):
 			print(*i,sep='  ')
 		print('Player 1 it is your turn!')
 		coord = np.array(input('Enter the coordinates of your attack Ex:(1,2): ').split(','),dtype = int)-1
-		moves_1(coord)
+		l = moves_1(coord)   # just a test if does not work will take out while statement and l back to (moves_1(coord))
+		while l == False:
+			print('You already hit there! Look at your hit sheet and choose another area.')
+			coord = np.array(input('Enter the coordinates of your attack Ex:(1,2): ').split(','),dtype = int)-1
+			l = moves_1(coord)
 		if end(player_2) == 0:
 			print('you won the game!!!')
 			break
@@ -345,7 +349,11 @@ for i in range(1,203):
 			print(*i,sep='  ')
 		print('Player 2 it is your turn!')
 		coord = np.array(input('Enter the coordinates of your attack Ex:(1,2): ').split(','),dtype = int)-1
-		moves_2(coord)
+		l = moves_2(coord)   # just a test if does not work will take out while statement and l back to (moves_2(coord))
+		while l == False:
+			print('You already hit there! Look at your hit sheet and choose another area.')
+			coord = np.array(input('Enter the coordinates of your attack Ex:(1,2): ').split(','),dtype = int)-1
+			l = moves_2(coord)
 		if end(player_1) == 0:
 			print('You won the game!!!')
 			break
