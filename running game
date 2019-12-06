@@ -3,14 +3,33 @@
 #  “Aggies do not lie, cheat, or steal, or tolerate those who do”
 #  “I have not given or received any unauthorized aid on this assignment”
 # 
-# Name: 		Erwin Luevano
-# UIN:          930002548
+# Names: 		Erwin Luevano
+#               Cedar Maxwell
+#               Alex Torres
+#               Muhammad Amer 
 # Section:		ENGR 102-537
-# Assignment:	Lab 7b
-# Date:		    16 10 2019
+# Assignment:	Game project
+# Date:		    01 12 2019
 
 """
+import random as r
 import numpy as np
+
+
+###############################################################################################################
+def coord():
+	pass
+# need to see what functions are connected and create user input and computer input
+###############################################################################################################
+def cedar_comp():
+	dict_directions = {1:'y' ,2:'n'} # changed to y or n because if anything was placed into bool == True
+	y = r.randrange(1,11)
+	x = r.randrange(1,11)
+	direction = dict_directions[r.randint(1,2)]
+	return y,x,direction
+	
+
+
 ###############################################################################################################
 def end(player):
 	"""
@@ -34,7 +53,10 @@ def end(player):
 				a += 1
 			elif t == 'P':
 				a += 1	
-	return a
+	if a == 0:
+			print('you won the game!!!')
+			return True
+	return False
 ###############################################################################################################		
 def moves(num,coord):  
 	"""
@@ -48,6 +70,8 @@ def moves(num,coord):
 	
 	"""
 	# Resets/creates variables
+	if coord[0] == 0 or coord[1] == 0:
+		return False
 	player = None
 	oppos = None
 	yours = None
@@ -83,233 +107,163 @@ def moves(num,coord):
 		return False
 	
 ###############################################################################################################
-# Creates Carrier ship of 5 spaces in direction the user chooses
-def carrier(num,coordinate,direction):
-	"""
-	param: num ~ identifies player turn
-	param: coordinate ~ place to place their piece
-	param: direction ~ the direction of the rest of ship
-	
-	will find which players turn it is with num and place their ship in the direction and location 
-		 of their choosing 
-	
-	"""
-	if num == 1:
-		player = player_1
-	elif num == 2:
-		player = player_2
-	player[coordinate[0]][coordinate[1]] = 'C'
-	if direction == 'l':
-		for i in range(1,5):
-			player[coordinate[0]][coordinate[1]-i] = 'C'
-	elif direction == 'r':
-		for i in range(1,5):
-			player[coordinate[0]][coordinate[1]+i] = 'C'
-	elif direction == 'd':
-		for i in range(1,5):
-			player[coordinate[0]+i][coordinate[1]] = 'C'
-	elif direction == 'u':
-		for i in range(1,5):
-			player[coordinate[0]-i][coordinate[1]] = 'C'
+def correct_move(num,coord): # makes sure move is allowed 
+	l = None
+	l = moves(num,coord)   
+	# loops until acceptable attack is entered
+	while l == False:
+		print('You already hit there! Look at your hit sheet and choose another area.')
+		coord = np.array(input('Enter the coordinates of your attack Ex:(1,2): ').split(','),dtype = int)
+		l = moves(num,coord)
 ###############################################################################################################
-# Creates Battleship ship of 4 spaces in direction the user chooses
-def battleship(num,coordinate,direction):
-	"""
-	param: num ~ identifies player turn
-	param: coordinate ~ place to place their piece
-	param: direction ~ the direction of the rest of ship
-	
-	will find which players turn it is with num and place their ship in the direction and location 
-		 of their choosing 
-	
-	"""
-	if num == 1:
-		player = player_1
-	elif num == 2:
-		player = player_2
-	player[coordinate[0]][coordinate[1]] = 'B'
-	if direction == 'l':
-		for i in range(1,4):
-			player[coordinate[0]][coordinate[1]-i] = 'B'
-	elif direction == 'r':
-		for i in range(1,4):
-			player[coordinate[0]][coordinate[1]+i] = 'B'
-	elif direction == 'd':
-		for i in range(1,4):
-			player[coordinate[0]+i][coordinate[1]] = 'B'
-	elif direction == 'u':
-		for i in range(1,4):
-			player[coordinate[0]-i][coordinate[1]] = 'B'
+
+def set_tile(board,location,char):
+	board[location[0]][location[1]] = char
 ###############################################################################################################
-# Creates Destroyer ship of 3 spaces in direction the user chooses
-def destroyer(num,coordinate,direction):
-	"""
-	param: num ~ identifies player turn
-	param: coordinate ~ place to place their piece
-	param: direction ~ the direction of the rest of ship
-	
-	will find which players turn it is with num and place their ship in the direction and location 
-		 of their choosing 
-	
-	"""
-	if num == 1:
-		player = player_1
-	elif num == 2:
-		player = player_2
-	player[coordinate[0]][coordinate[1]] = 'D'
-	if direction == 'l':
-		for i in range(1,3):
-			player[coordinate[0]][coordinate[1]-i] = 'D'
-	elif direction == 'r':
-		for i in range(1,3):
-			player[coordinate[0]][coordinate[1]+i] = 'D'
-	elif direction == 'd':
-		for i in range(1,3):
-			player[coordinate[0]+i][coordinate[1]] = 'D'
-	elif direction == 'u':
-		for i in range(1,3):
-			player[coordinate[0]-i][coordinate[1]] = 'D'
-###############################################################################################################
-# Creates submarine ship of 3 spaces in direction the user chooses
-def submarine(num,coordinate,direction):
-	"""
-	param: num ~ identifies player turn
-	param: coordinate ~ place to place their piece
-	param: direction ~ the direction of the rest of ship
-	
-	will find which players turn it is with num and place their ship in the direction and location 
-		 of their choosing 
-	
-	"""
-	if num == 1:
-		player = player_1
-	elif num == 2:
-		player = player_2
-	player[coordinate[0]][coordinate[1]] = 'S'
-	if direction == 'l':
-		for i in range(1,3):
-			player[coordinate[0]][coordinate[1]-i] = 'S'
-	elif direction == 'r':
-		for i in range(1,3):
-			player[coordinate[0]][coordinate[1]+i] = 'S'
-	elif direction == 'd':
-		for i in range(1,3):
-			player[coordinate[0]+i][coordinate[1]] = 'S'
-	elif direction == 'u':
-		for i in range(1,3):
-			player[coordinate[0]-i][coordinate[1]] = 'S'
-###############################################################################################################
-# Creates Patrol Boat ship of 2 spaces in direction the user chooses
-def patrol_boat(num,coordinate,direction):
-	"""
-	param: num ~ identifies player turn
-	param: coordinate ~ place to place their piece
-	param: direction ~ the direction of the rest of ship
-	
-	will find which players turn it is with num and place their ship in the direction and location 
-		 of their choosing 
-	
-	"""
-	if num == 1:
-		player = player_1
-	elif num == 2:
-		player = player_2
-	player[coordinate[0]][coordinate[1]] = 'P'
-	if direction == 'l':
-		player[coordinate[0]][coordinate[1]-1] = 'P'
-	elif direction == 'r':
-		player[coordinate[0]][coordinate[1]+1] = 'P'
-	elif direction == 'd':
-		player[coordinate[0]+1][coordinate[1]] = 'P'
-	elif direction == 'u':
-		player[coordinate[0]-1][coordinate[1]] = 'P'
+def place_ship(board,location_origin,length,vertical):
+    #location: tuple of coordinates of top of ship
+    #length: int to represent length of ship
+    #vertical: bool is true if ship is vertical
+    #place_ship returns False if placement is invalid
+
+	#place_ship will place partial ships if they leave the board boundaries
+    label = {5:'C',4:'B',3:'S',2:'P'} # 3 and 3
+    ship = label[length]
+    x = 0
+    y = 0
+
+    location = location_origin
+    for i in range(length):
+        location = (location_origin[0]+x,location_origin[1]+y)
+        set_tile(board,location,ship)
+        if vertical == 'Y' or vertical == 'y':
+            x += 1
+        else:
+            y += 1
+		
 
 
+		
+###############################################################################################################	
+def rules_c(player,coordinate,lent,vert):
 
+    dict_tr = {'Y','y','N','n'}
+    if vert not in dict_tr:
+        return False
+    if player[coordinate[0]][coordinate[1]] != '.':
+        return False
+    x = 0
+    y = 0
+    if vert == 'y' or vert == 'Y':
+        if coordinate[0] + length <= 10:
+            for i in range(length):
+                if player[coordinate[0]+x][coordinate[1]] != '.':
+                    return False
+                x += 1
+        else: 
+            return False
+    else:
+        if coordinate[1] + length <= 10:
+            for i in range(length):
+                if player[coordinate[0]][coordinate[1]+y] != '.':
+                    return False
+                y += 1
+        else: 
+            return False 
+    return True
+###############################################################################################################
+def placement_c(player,coordinate,lent,vert): # works with erwins idea of code
+	var = rules_c(player,coordinate,lent,vert)
+	while var == False:
+		print('You didnt enter a correct placement try again.')
+		coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)
+		vert = input('Enter if the ship will be vertical. Enter:(y or n)')
+		var = rules_c(player,coordinate,lent,vert)
+	return coordinate,vert
+###############################################################################################################
 	
 for num in range(1,203): # loops through game until someone wins or all spaces have been used 
 ###############################################################################################################
 	if num ==1 : # player 1 board 
-		opponents_2 =[['.','.','.','.','.','.','.','.','.','.'],
-	               ['.','.','.','.','.','.','.','.','.','.'],
-	               ['.','.','.','.','.','.','.','.','.','.'],
-	               ['.','.','.','.','.','.','.','.','.','.'],
-	               ['.','.','.','.','.','.','.','.','.','.'],
-	               ['.','.','.','.','.','.','.','.','.','.'],
-	               ['.','.','.','.','.','.','.','.','.','.'],
-	               ['.','.','.','.','.','.','.','.','.','.'],
-	               ['.','.','.','.','.','.','.','.','.','.'],
-			       ['.','.','.','.','.','.','.','.','.','.']]
+		opponents_2 =[[' ','1','2','3','4','5','6','7','8','9','0'],
+				      ['1','.','.','.','.','.','.','.','.','.','.'],
+	                  ['2','.','.','.','.','.','.','.','.','.','.'],
+	                  ['3','.','.','.','.','.','.','.','.','.','.'],
+	                  ['4','.','.','.','.','.','.','.','.','.','.'],
+	                  ['5','.','.','.','.','.','.','.','.','.','.'],
+	                  ['6','.','.','.','.','.','.','.','.','.','.'],
+	                  ['7','.','.','.','.','.','.','.','.','.','.'],
+	                  ['8','.','.','.','.','.','.','.','.','.','.'],
+	                  ['9','.','.','.','.','.','.','.','.','.','.'],
+			          ['0','.','.','.','.','.','.','.','.','.','.']]
 		
 		print('player 2')
-		player_1 = [['.','.','.','.','.','.','.','.','.','.'],
-                   ['.','.','.','.','.','.','.','.','.','.'],
-                   ['.','.','.','.','.','.','.','.','.','.'],
-			       ['.','.','.','.','.','.','.','.','.','.'],
-                   ['.','.','.','.','.','.','.','.','.','.'],
-                   ['.','.','.','.','.','.','.','.','.','.'],
-                   ['.','.','.','.','.','.','.','.','.','.'],
-                   ['.','.','.','.','.','.','.','.','.','.'],
-                   ['.','.','.','.','.','.','.','.','.','.'],
-		           ['.','.','.','.','.','.','.','.','.','.']]
+		player_1 =   [[' ','1','2','3','4','5','6','7','8','9','0'],
+				      ['1','.','.','.','.','.','.','.','.','.','.'],
+	                  ['2','.','.','.','.','.','.','.','.','.','.'],
+	                  ['3','.','.','.','.','.','.','.','.','.','.'],
+	                  ['4','.','.','.','.','.','.','.','.','.','.'],
+	                  ['5','.','.','.','.','.','.','.','.','.','.'],
+	                  ['6','.','.','.','.','.','.','.','.','.','.'],
+	                  ['7','.','.','.','.','.','.','.','.','.','.'],
+	                  ['8','.','.','.','.','.','.','.','.','.','.'],
+	                  ['9','.','.','.','.','.','.','.','.','.','.'],
+			          ['0','.','.','.','.','.','.','.','.','.','.']]
 		
 		for i in opponents_2: #prints out layout of board 
 			print(*i, sep ='  ')
 		print('player 1')
 		for i in player_1:
 			print(*i, sep = '  ')		
-		
-
-		# player sets up their board by placing their ships
-		coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
-		direction = input('Enter the direction of your piece: ')
-		carrier(num,coordinate,direction)
-		coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
-		direction = input('Enter the direction of your piece choices(u,d,l,r): ')
-		battleship(num,coordinate,direction)
-		coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
-		direction = input('Enter the direction of your piece: ')
-		destroyer(num,coordinate,direction)
-		coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
-		direction = input('Enter the direction of your piece: ')
-		patrol_boat(num,coordinate,direction)
-		coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
-		direction = input('Enter the direction of your piece: ')
-		submarine(num,coordinate,direction)
+ 		# player sets up their board by placing their ships
+		##### cedars ship placement
+		length_dict = {0:[5,'Carrier'],1:[4,'Battleship'],2:[3,'Submarine'],3:[3,'Destroyer'],4:[2,'Patrol Boat']}
+		for i in range(5):
+			vertical = None
+			length, name = length_dict[i]
+			print('The',name,'takes up',length,'spaces.' )
+			coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)
+			vertical = input('Enter if the ship will be vertical. Enter:(True or False)')
+			coordinate,vertical = placement_c(player_1,coordinate,length,vertical)
+			place_ship(player_1,coordinate,length,vertical)
 		# prints players board to see their finished result
-		print('Your attack board')
-		for i in opponents_2:
-			print(*i,sep='  ')
-		print('Player 1')
-		for i in player_1:
-			print(*i,sep= '  ')
+			print('Your attack board')
+			for i in opponents_2:
+				print(*i,sep='  ')
+			print('Player 1')
+			for i in player_1:
+				print(*i,sep= '  ')
+		ready = input('Ready to switch? press Enter!')
+		print(10*'\n')
 		# does not move on until user is ready
 		switch = input('If you have swtiched say yes:')
 		print(10*'\n')
 ###############################################################################################################
 	elif num == 2:
-		opponents_1 =[['.','.','.','.','.','.','.','.','.','.'],
-                     ['.','.','.','.','.','.','.','.','.','.'],
-                     ['.','.','.','.','.','.','.','.','.','.'],
-			         ['.','.','.','.','.','.','.','.','.','.'],
-                     ['.','.','.','.','.','.','.','.','.','.'],
-                     ['.','.','.','.','.','.','.','.','.','.'],
-                     ['.','.','.','.','.','.','.','.','.','.'],
-                     ['.','.','.','.','.','.','.','.','.','.'],
-                     ['.','.','.','.','.','.','.','.','.','.'],
-		             ['.','.','.','.','.','.','.','.','.','.']]
+		opponents_1 =[[' ','1','2','3','4','5','6','7','8','9','0'],
+				      ['1','.','.','.','.','.','.','.','.','.','.'],
+	                  ['2','.','.','.','.','.','.','.','.','.','.'],
+	                  ['3','.','.','.','.','.','.','.','.','.','.'],
+	                  ['4','.','.','.','.','.','.','.','.','.','.'],
+	                  ['5','.','.','.','.','.','.','.','.','.','.'],
+	                  ['6','.','.','.','.','.','.','.','.','.','.'],
+	                  ['7','.','.','.','.','.','.','.','.','.','.'],
+	                  ['8','.','.','.','.','.','.','.','.','.','.'],
+	                  ['9','.','.','.','.','.','.','.','.','.','.'],
+			          ['0','.','.','.','.','.','.','.','.','.','.']]
 		
 		print('player 1')
-		player_2 = [['.','.','.','.','.','.','.','.','.','.'],
-		           ['.','.','.','.','.','.','.','.','.','.'],
-                   ['.','.','.','.','.','.','.','.','.','.'],
-			       ['.','.','.','.','.','.','.','.','.','.'],
-                   ['.','.','.','.','.','.','.','.','.','.'],
-                   ['.','.','.','.','.','.','.','.','.','.'],
-                   ['.','.','.','.','.','.','.','.','.','.'],
-                   ['.','.','.','.','.','.','.','.','.','.'],
-                   ['.','.','.','.','.','.','.','.','.','.'],
-				   ['.','.','.','.','.','.','.','.','.','.']]
+		player_2 =   [[' ','1','2','3','4','5','6','7','8','9','0'],
+				      ['1','.','.','.','.','.','.','.','.','.','.'],
+	                  ['2','.','.','.','.','.','.','.','.','.','.'],
+	                  ['3','.','.','.','.','.','.','.','.','.','.'],
+	                  ['4','.','.','.','.','.','.','.','.','.','.'],
+	                  ['5','.','.','.','.','.','.','.','.','.','.'],
+	                  ['6','.','.','.','.','.','.','.','.','.','.'],
+	                  ['7','.','.','.','.','.','.','.','.','.','.'],
+	                  ['8','.','.','.','.','.','.','.','.','.','.'],
+	                  ['9','.','.','.','.','.','.','.','.','.','.'],
+			          ['0','.','.','.','.','.','.','.','.','.','.']]
 		
 		for i in opponents_1: #prints out layout of game board before every move
 			print(*i, sep ='  ')
@@ -319,28 +273,24 @@ for num in range(1,203): # loops through game until someone wins or all spaces h
 
 		# thinking of printing out the graph everytime so the person sees where they placed their ships
 		# or would it be too much printing????????
-		coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
-		direction = input('Enter the direction of your piece: ')
-		carrier(num,coordinate,direction) 
-		coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
-		direction = input('Enter the direction of your piece choices(u,d,l,r): ')
-		battleship(num,coordinate,direction)
-		coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
-		direction = input('Enter the direction of your piece choices(u,d,l,r): ')
-		destroyer(num,coordinate,direction)
-		coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
-		direction = input('Enter the direction of your piece choices(u,d,l,r): ')
-		patrol_boat(num,coordinate,direction)
-		coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)-1
-		direction = input('Enter the direction of your piece choices(u,d,l,r): ')
-		submarine(num,coordinate,direction)
-		print('player 1')
-		for i in opponents_1:
-			print(*i,sep='  ')
-		print('Player_2')
-		for i in player_2:
-			print(*i,sep='  ')
-		# does not move on till user is ready
+		# player sets up their board by placing their ships
+		length_dict = {0:[5,'Carrier'],1:[4,'Battleship'],2:[3,'Submarine'],3:[3,'Destroyer'],4:[2,'Patrol Boat']}
+		for i in range(5):
+			length, name = length_dict[i]
+			print('The',name,'takes up',length,'spaces.' )			
+			coordinate = np.array(input('Enter the coordinate Ex:(1,2): ').split(','),dtype = int)
+			vertical = bool(input('Enter if the ship will be vertical. Enter:(True or False)'))
+			coordinate,vertical = placement_c(player_2,coordinate,length,vertical)
+			place_ship(player_1,coordinate,length,vertical)
+			print('player 1')
+			for i in opponents_1:
+				print(*i,sep='  ')
+			print('Player_2')
+			for i in player_2:
+				print(*i,sep='  ')
+		ready = input('Ready to switch? press Enter!')
+		print(10*'\n')
+		# does not move on until user is ready
 		switch = input('If you have swtiched say yes:')
 		print(10*'\n')
 ###############################################################################################################	
@@ -353,19 +303,16 @@ for num in range(1,203): # loops through game until someone wins or all spaces h
 		for i in player_1:
 			print(*i,sep='  ')
 		print('Player 1 it is your turn!')
-		coord = np.array(input('Enter the coordinates of your attack Ex:(1,2): ').split(','),dtype = int)-1
-		l = moves(num,coord)   
-		# loops until acceptable attack is entered
-		while l == False:
-			print('You already hit there! Look at your hit sheet and choose another area.')
-			coord = np.array(input('Enter the coordinates of your attack Ex:(1,2): ').split(','),dtype = int)-1
-			l = moves(num,coord)
+		coord = np.array(input('Enter the coordinates of your attack Ex:(1,2): ').split(','),dtype = int)
+		correct_move(num,coord)
 		# checks if player 1 has won
-		if end(player_2) == 0:
-			print('you won the game!!!')
+		if end(player_2):
 			break
 		# allows user to see board after attack
 		user = input('See if you hit or missed and press enter for player twos turn!')
+		print(10*'\n')
+		# does not move on until user is ready
+		switch = input('If you have swtiched say yes:')
 		print(10*'\n')
 ###############################################################################################################		
 	# player 2 turn to attack
@@ -377,18 +324,22 @@ for num in range(1,203): # loops through game until someone wins or all spaces h
 		for i in player_2:
 			print(*i,sep='  ')
 		print('Player 2 it is your turn!')
-		coord = np.array(input('Enter the coordinates of your attack Ex:(1,2): ').split(','),dtype = int)-1
-		l = moves(num,coord) 
-		# loops until acceptable attack is entered  
-		while l == False:
-			print('You already hit there! Look at your hit sheet and choose another area.')
-			coord = np.array(input('Enter the coordinates of your attack Ex:(1,2): ').split(','),dtype = int)-1
-			l = moves(num,coord)
+		coord = np.array(input('Enter the coordinates of your attack Ex:(1,2): ').split(','),dtype = int)
+		correct_move(num,coord)
 		# checks if player 2 has won
-		if end(player_1) == 0:
-			print('You won the game!!!')
+		if end(player_1):
 			break
-		# allows user to see board after attack
-		user = input('See if you hit or missed and press enter for player ones turn!')
+		user = input('See if you hit or missed and press enter for player twos turn!')
 		print(10*'\n')
+		# does not move on until user is ready
+		switch = input('If you have swtiched say yes:')
+		print(10*'\n')
+		
+		
+		
+		
+		
+		
+		
+		
 		
