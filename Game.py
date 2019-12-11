@@ -530,7 +530,7 @@ def main():
 				print('The',name,'takes up',length,'spaces.' )	
 				print('Enter the row and column for placement of your ship.')
 				coordinate,vertical = who_play(whos,num) # recieves coordinate
-				coordinate,vertical = placement_c(player_1,coordinate,length,vertical,whos) # checks for placment of ship is correct
+				coordinate,vertical = placement_c(player_2,coordinate,length,vertical,whos) # checks for placment of ship is correct
 				place_ship(player_2,coordinate,length,vertical,label) # places ship
 				board(num) # prints board
 			# for privacy of each player and gives option to end game
