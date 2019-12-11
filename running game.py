@@ -1,4 +1,3 @@
-"""
 # By submitting this assignment, I agree to the following:
 #  “Aggies do not lie, cheat, or steal, or tolerate those who do”
 #  “I have not given or received any unauthorized aid on this assignment”
@@ -11,16 +10,11 @@
 # Assignment:	Game project
 # Date:		    01 12 2019
 
-"""
 import random as r
-
 import numpy as np
-
 import winsound as w
 
-
 ###############################################################################################################
-
 
 def comp_play():
     """
@@ -33,7 +27,6 @@ def comp_play():
     coord = np.array([r.randrange(1,11),r.randrange(1,11)]) # computer generated coordinate 
     direction = dict_directions[r.randint(1,2)] # computer gnereated direction
     return coord,direction 
-
 
 ###############################################################################################################
 
@@ -567,14 +560,3 @@ for num in range(1,203): # loops through game until someone wins
         print(20*'\n')
 		# does not move on until user is ready
         switch = input('If you have swtiched say yes:')
-
-
-
-
-
-		
-		
-		
-		
-		
-		
