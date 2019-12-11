@@ -21,7 +21,6 @@ def comp_play():
     no parameters
     returns:
         computer generated coordinate and direction
-    
     """
     dict_directions = {1:'y' ,2:'n'} # dictionary for computer placement of ship 
     coord = np.array([r.randrange(1,11),r.randrange(1,11)]) # computer generated coordinate 
@@ -43,12 +42,12 @@ def coord_1(num):
     # try and except for coordinate entry will stop program if floats and numbers out of range entered
     try:
         coordinate = input('Enter the row and column Ex:(a,2): ').split(',')
-        coordinate = np.array([dict_rows[coordinate[0]],coordinate[1]], dtype = int)
+        coordinate = np.array([dict_rows[coordinate[0]],int(coordinate[1])], dtype = int)
 
     except:
-        print('For the coordinate you can only enter the letters from a-j and positive whole numbers. Please Try again.')
+        print('For the coordinate you can only enter the letters from a-j and positive whole numbers. Please try again.')
         coordinate = input('Enter the row and column Ex:(a,2): ').split(',') 
-        if coordinate[0] in dict_rows and coordinate[1]<=10: # checks to see if everything is correct in entry
+        if coordinate[0] in dict_rows and int(coordinate[1])<=10: # checks to see if everything is correct in entry
             coordinate = np.array([dict_rows[coordinate[0]],coordinate[1]], dtype = int) # creates array for coordinates
         else: # if entry is not correct will loop until it is
             while coordinate[0] not in dict_rows or coordinate[1]>10: # loops until everything is correct
@@ -63,7 +62,6 @@ def coord_1(num):
 # need to see what functions are connected and create user input and computer input
 
 ###############################################################################################################
-
 
 def who_play(whos,num): 
     """
@@ -90,10 +88,7 @@ def who_play(whos,num):
         coordinate,vertical = comp_play()
         return coordinate, vertical
 
-
 ###############################################################################################################
-
-
 
 def board(num):
     """
@@ -116,7 +111,6 @@ def board(num):
         for i in player:
             print(*i,sep= '  ')	
 
-
 ###############################################################################################################
 
 def end(player):
@@ -128,9 +122,7 @@ def end(player):
         False
         True
     Counts the pieces on the board of oponent ship, if there isnt any then will return true to end game
-    
     """
-
     p = 0 # pieces counter
     # Loops through board checking if their are still pieces of opponents ship
     dict_pieces = {'C','B','S','D','P'} # pieces dictionary
@@ -141,7 +133,6 @@ def end(player):
     if p == 0:
         print('you won the game!!!')
         return True
-
     return False
 
 ###############################################################################################################		
@@ -167,7 +158,6 @@ def moves(num,coord):
         coord_holder = new_coord_1
     else: # if player 2
         coord_holder = new_coord_2
-    
     if coord[0] == 0 or coord[1] == 0: # makes sure move is on board
         return False
 	# Resets/creates variables
@@ -189,7 +179,6 @@ def moves(num,coord):
             new_coord_2 = coord_holder
 		# prints graph after attacks
         board(num) # prints board
-    
     elif player[coord[0]][coord[1]] == '.' and player[coord[0]][coord[1]] != 'O' and player[coord[0]][coord[1]] != 'X':
         player[coord[0]][coord[1]] = 'O'
         oppos[coord[0]][coord[1]] = 'O'
@@ -199,8 +188,9 @@ def moves(num,coord):
 	# if the spot has been hit then user is able to enter coordinates till they are accepted
     else:
         return False
+		
 ###############################################################################################################
-# =============================================================================
+
 def Newmove(num,coord):
     """
     
@@ -297,21 +287,20 @@ def set_tile(board,location,char):
     """
     board[location[0]][location[1]] = char # places piece of ship
 
-def place_ship(board,location_origin,size,vertical,label):
-    """
-    param:
-        location: tuple of coordinates of top of ship
-        length: int to represent length of ship
-        vertical: bool is true if ship is vertical
+def place_ship(board,location_origin,length,vertical,label):
+    #location: tuple of coordinates of top of ship
+    #length: int to represent length of ship
+    #vertical: bool is true if ship is vertical
+    #place_ship returns False if placement is invalid
 
-	place_ship will place partial ships if they leave the board boundaries
+	#place_ship will place partial ships if they leave the board boundaries
     
-    """
     x = 0
     y = 0
 
     location = location_origin # variable for location of each piece
-    for i in range(size): # loops through size of ship to create each ship piece
+	
+    for i in range(length): # loops through size of ship to create each ship piece
         location = (location_origin[0]+x,location_origin[1]+y) # adds in direction that piece will be placed
         set_tile(board,location,label) # places piece
         if vertical == 'Y' or vertical == 'y': # what direction the piece will be placed
@@ -341,10 +330,10 @@ def rules_c(player,coordinate,lent,vert):
     dict_pieces = {'C','B','D','S','P'} # dictionary of pieces
     dict_tr = {'Y','y','N','n'} # dictionary of pieces
     if vert not in dict_tr: # makes sure a correct direction was entered
-        print('You did not enter a proper direction.')
+        print('Improper direction entered, please try again.')
         return False
     if player[coordinate[0]][coordinate[1]] != '.': # if their is already a piece where user would like to place ship
-        print('You were over lapping a ship.')
+        print('Ships overlapping; please try again.')
         return False
     # creates variables
     x = 0
@@ -353,7 +342,7 @@ def rules_c(player,coordinate,lent,vert):
         if coordinate[0] + length <= 10: # if the whole ship will be inside the board
             for i in range(length): # loops through length making sure each piece is not covering another ship
                 if player[coordinate[0]+x][coordinate[1]] in dict_pieces or player[coordinate[0]+x][coordinate[1]]!= '.': # where the ship will be placed is not empty
-                    print('You were over lapping a ship.')
+                    print('You were overlapping a ship.')
                     return False
                 x += 1
         else: # when ship does not stay in the board
