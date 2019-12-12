@@ -1,3 +1,4 @@
+"""
 # By submitting this assignment, I agree to the following:
 #  “Aggies do not lie, cheat, or steal, or tolerate those who do”
 #  “I have not given or received any unauthorized aid on this assignment”
@@ -9,7 +10,7 @@
 # Section:        ENGR 102-537
 # Assignment:    Game project
 # Date:            01 12 2019
-
+"""
 import sys
 import random as r
 import numpy as np
@@ -44,6 +45,7 @@ def end(player):
                 p += 1
     if p == 0:
         print('you won the game!!!')
+        w.PlaySound('win_cut',w.SND_FILENAME)
         return True
     return False
 
@@ -154,7 +156,7 @@ def board(num):
 			
 ###############################################################################################################		
 
-def moves(num,coord):  
+def moves(num,coord,for_next):  
     """
     
     param:
@@ -178,6 +180,8 @@ def moves(num,coord):
     
     if coord[0] == 0 or coord[1] == 0: # makes sure move is on board
         return False
+    if coord[0] > 10 or coord[1] > 10:
+        return False
 	# Resets/creates variables
     player = None
     oppos = None
@@ -186,11 +190,11 @@ def moves(num,coord):
     else: # if player 2 turn will use player two variables
         player, oppos, coord_holder = player_1, opponents_1, new_coord_2 # player 2 vairable
 	# checks if ship is there and if position has not been hit yet and then marks area as hit/miss with 'X' and 'O' in coordinate of attack
-    if player[coord[0]][coord[1]] != '.' and player[coord[0]][coord[1]]!= 'O' and player[coord[0]][coord[1]] != 'X': 
+    if player[coord[0]][coord[1]] != '.' and player[coord[0]][coord[1]]!= 'O' and player[coord[0]][coord[1]] != 'X':
         oppos[coord[0]][coord[1]] = 'X' 
         player[coord[0]][coord[1]] = 'X'
-        w.PlaySound('Blowing up sound fades away', w.SND_FILENAME)        
-        coord_holder = [coord[0],coord[1]] # saves hit for computer
+        #w.PlaySound('Blowing up sound fades away', w.SND_FILENAME)        
+        coord_holder = [coord[0],coord[1],for_next] # saves hit for computer
         if num %2 ==1: # if player 1
             new_coord_1 = coord_holder
         else: # if player 2
@@ -235,12 +239,23 @@ def Newmove(num,coord):
         # creates variables
         x = 0 
         y = 0
-        t_f = moves(num,newcoord) # checks to see if move is valid
+		################################### added len and 3rd parameter to moves function
+       
+        t_f = moves(num,newcoord,-1) # checks to see if move is valid
         while t_f == False:   # while move around last hit is not valid
+            if len(coord_holder) == 3: # if 3 has a smart next move same direction as move before
+                if coord_holder[2] >-1: # makes sure correct number is in there
+                    x,y = dict_next_move[coord_holder[2]] # changes x and y gives them value
+                    newcoord =  (coord_holder[0]+x,coord_holder[1]+y) # creates next coord
+                    t_f = moves(num,newcoord,coord_holder[2]) # checks if move is valid
+                    if t_f != False: # if is not false will stick with move
+                        break
+                    if t_f == False: # if false then next move isnt helpful anymore will search around next
+                        coord_holder = [coord_holder[0],coord_holder[1]] # takes away next move integer 
             for i in range(4): # loops for next best move
                 x,y = dict_next_move[i] # x and y given values
                 newcoord =  (coord_holder[0]+x,coord_holder[1]+y) # new coordinate created
-                t_f = moves(num,newcoord) # checks to see if move is valid
+                t_f = moves(num,newcoord,i) # checks to see if move is valid
                 if t_f != False: # if move was valid breaks outside of loop 
                     break
             if t_f == False: # if all moves around last hit have been used 
@@ -253,10 +268,10 @@ def Newmove(num,coord):
                     new_coord_2 = coord_holder
                 return False # sends back to create random move
     else: # creates random move for when last move was a miss
-        t = moves(num,coord) # checks to see if move is valid
+        t = moves(num,coord,-1) # checks to see if move is valid
         while t == False: # loops until valid move is created
             coord = who_play(whos,num)[0]   # sets new coordinate as first returned value of computer created move
-            t = moves(num,coord) # checks if valid move
+            t = moves(num,coord,-1) # checks if valid move
             
 ###############################################################################################################
 
@@ -276,7 +291,7 @@ def correct_move(num,coord,whos):
     if (whos == 'cvp' and num %2 == 0) or whos == 'cvc': # if computer is playing
         l = Newmove(num,coord) # computer move creator
     else: # if player is playing
-        l = moves(num,coord)   
+        l = moves(num,coord,-1)   
 
 	# loops until acceptable attack is entered
 
@@ -287,7 +302,7 @@ def correct_move(num,coord,whos):
         if (whos == 'cvp' and num %2 == 0) or whos == 'cvc': # if player is playing
             l = Newmove(num,coord)
         else: # if player is playing
-            l = moves(num,coord) 
+            l = moves(num,coord,-1) 
 
 ###############################################################################################################
 
@@ -344,6 +359,9 @@ def rules_c(player,coordinate,lent,vert):
     """
     dict_pieces = {'C','B','D','S','P'} # dictionary of pieces
     dict_tr = {'Y','y','N','n'} # dictionary of pieces
+    if coordinate[0] >10 or coordinate[1] > 10: # makes sure coordinate is in board
+        print('You coordnate was not on the board')
+        return False
     if vert not in dict_tr: # makes sure a correct direction was entered
         print('You did not enter a proper direction.')
         return False
@@ -354,7 +372,7 @@ def rules_c(player,coordinate,lent,vert):
     x = 0
     y = 0
     if vert == 'y' or vert == 'Y': # when the ship extends down
-        if coordinate[0] + length <= 10: # if the whole ship will be inside the board
+        if coordinate[0] + length-1 <= 10: # if the whole ship will be inside the board
             for i in range(length): # loops through length making sure each piece is not covering another ship
                 if player[coordinate[0]+x][coordinate[1]] in dict_pieces or player[coordinate[0]+x][coordinate[1]]!= '.': # where the ship will be placed is not empty
                     print('You were over lapping a ship.')
@@ -364,7 +382,7 @@ def rules_c(player,coordinate,lent,vert):
             print('The ship did not stay on the board')
             return False
     else: # if the ship extends toward the right
-        if coordinate[1] + length <= 10: # if ship stays in board
+        if coordinate[1] + length-1 <= 10: # if ship stays in board
             for i in range(length): # loops through length making sure each piece is not covering another ship
                 if player[coordinate[0]][coordinate[1]+y] in dict_pieces or player[coordinate[0]][coordinate[1]+y]!= '.': # where the ship will be placed is not empty
                     print('You were over lapping a ship.')
@@ -406,11 +424,11 @@ def placement_c(player,coordinate,lent,vert,whos):
 
 def main():
 
-	print('BATTLESHIP')
+    print('BATTLESHIP')
 
-	print('Welcome to the game Battleship.')
+    print('Welcome to the game Battleship.')
 
-	print('Rules:\n'
+    print('Rules:\n'
 
 		'You will place your ships on the board any way you like without seeing other players board\n'
 
@@ -424,27 +442,27 @@ def main():
 
 		'The board will inform you if your move is acceptable if not it will let you try again.\n'
 		
-		'If you would like to end the game enter end when game ask for coordinates'
+		'If you would like to end the game enter end twice to make sure when game ask for coordinates\n'
 
 		'Enjoy the game!')
-	w.PlaySound('intro',w.SND_FILENAME) # plays giving time for user to read rules
-	dict_play = {'pvp','cvp','cvc'} # dictionary of valid entries of who is playing
+    #w.PlaySound('intro',w.SND_FILENAME) # plays giving time for user to read rules
+    dict_play = {'pvp','cvp','cvc'} # dictionary of valid entries of who is playing
 	# ask for correct entry of who will be playing
-	global whos
-	whos = input('who is playing today(player v.s player :[pvp], computer v.s player:[cvp], computer v.s computer: [cvc]) :')
-	while whos not in dict_play:
-		whos = input('who is playing today(player v.s player :[pvp], computer v.s player:[cvp], computer v.s computer: [cvc]) :')
-	print('')
+    global whos
+    whos = input('who is playing today(player v.s player :[pvp], computer v.s player:[cvp], computer v.s computer: [cvc]) :')
+    while whos not in dict_play:
+        whos = input('who is playing today(player v.s player :[pvp], computer v.s player:[cvp], computer v.s computer: [cvc]) :')
+    print('')
 
-	length_dict = {0:[5,'Carrier','C'],1:[4,'Battleship','B'],2:[3,'Submarine','S'],3:[3,'Destroyer','D'],4:[2,'Patrol Boat','P']}
-	global num
-	for num in range(1,203): # loops through game until someone wins 
+    length_dict = {0:[5,'Carrier','C'],1:[4,'Battleship','B'],2:[3,'Submarine','S'],3:[3,'Destroyer','D'],4:[2,'Patrol Boat','P']}
+    global num
+    for num in range(1,203): # loops through game until someone wins 
     
 ###############################################################################################################
     
-		if num ==1 : # player 1 board 
-			global opponents_2
-			opponents_2 =[['  ','1','2','3','4','5','6','7','8','9','10','c'],
+        if num ==1 : # player 1 board 
+            global opponents_2
+            opponents_2 =[['  ','1','2','3','4','5','6','7','8','9','10','c'],
 						  ['a ','.','.','.','.','.','.','.','.','.','.'],
 						  ['b ','.','.','.','.','.','.','.','.','.','.'],
 						  ['c ','.','.','.','.','.','.','.','.','.','.'],
@@ -457,8 +475,8 @@ def main():
 						  ['j ','.','.','.','.','.','.','.','.','.','.'],
 						  ['r']]
 
-			global player_1
-			player_1 =   [['  ','1','2','3','4','5','6','7','8','9','10','c'],
+            global player_1
+            player_1 =   [['  ','1','2','3','4','5','6','7','8','9','10','c'],
 						  ['a ','.','.','.','.','.','.','.','.','.','.'],
 						  ['b ','.','.','.','.','.','.','.','.','.','.'],
 						  ['c ','.','.','.','.','.','.','.','.','.','.'],
@@ -471,31 +489,31 @@ def main():
 						  ['j ','.','.','.','.','.','.','.','.','.','.'],
 						  ['r']]
 
-			board(num)	# prints board
-			global new_coord_1
-			new_coord_1 = [0,0] # creates previous attack list
+            board(num)	# prints board
+            global new_coord_1
+            new_coord_1 = [0,0] # creates previous attack list
 			# player sets up their board by placing their ships
-			for i in range(5):
-				global length
-				length, name,label = length_dict[i] # assigns variables 
-				print('The',name,'takes up',length,'spaces.' )
-				print('Enter the coordinates for your ships placement.')
-				coordinate,vertical = who_play(whos,num) # retrieves the coordinates for the attack
-				coordinate,vertical = placement_c(player_1,coordinate,length,vertical,whos) # checks if placement is correct 
-				place_ship(player_1,coordinate,length,vertical,label) # places ship
+            for i in range(5):
+                global length
+                length, name,label = length_dict[i] # assigns variables 
+                print('The',name,'takes up',length,'spaces.' )
+                print('Enter the coordinates for your ships placement.')
+                coordinate,vertical = who_play(whos,num) # retrieves the coordinates for the attack
+                coordinate,vertical = placement_c(player_1,coordinate,length,vertical,whos) # checks if placement is correct 
+                place_ship(player_1,coordinate,length,vertical,label) # places ship
 			# prints players board to see their finished result
-				board(num)
-			ready = input('Ready to switch? press Enter or enter end!') # gives user time to check board and gives option to end game
-			if ready == 'end': # ends game
-				end([ready])
-			print(20*'\n') # privacy for user till player have switched
+                board(num)
+            ready = input('Ready to switch? press Enter or enter end!') # gives user time to check board and gives option to end game
+            if ready == 'end': # ends game
+                end([ready])
+            print(20*'\n') # privacy for user till player have switched
 			# does not move on until user is ready
-			switch = input('If you have swtiched say yes:') # when players have switched
+            switch = input('If you have swtiched say yes:') # when players have switched
 			
 	###############################################################################################################
-		elif num == 2: # player 2's turn
-			global opponents_1
-			opponents_1 =[['  ','1','2','3','4','5','6','7','8','9','10','c'],
+        elif num == 2: # player 2's turn
+            global opponents_1
+            opponents_1 =[['  ','1','2','3','4','5','6','7','8','9','10','c'],
 						  ['a ','.','.','.','.','.','.','.','.','.','.'],
 						  ['b ','.','.','.','.','.','.','.','.','.','.'],
 						  ['c ','.','.','.','.','.','.','.','.','.','.'],
@@ -508,8 +526,8 @@ def main():
 						  ['j ','.','.','.','.','.','.','.','.','.','.'],
 						  ['r']]
 
-			global player_2
-			player_2 =   [['  ','1','2','3','4','5','6','7','8','9','10','c'],
+            global player_2
+            player_2 =   [['  ','1','2','3','4','5','6','7','8','9','10','c'],
 						  ['a ','.','.','.','.','.','.','.','.','.','.'],
 						  ['b ','.','.','.','.','.','.','.','.','.','.'],
 						  ['c ','.','.','.','.','.','.','.','.','.','.'],
@@ -521,65 +539,87 @@ def main():
 						  ['i ','.','.','.','.','.','.','.','.','.','.'],
 						  ['j ','.','.','.','.','.','.','.','.','.','.'],
 						  ['r']]
-			board(num) # prints board
-			global new_coord_2
-			new_coord_2 = [0,0] # place holder for hits
+            board(num) # prints board
+            global new_coord_2
+            new_coord_2 = [0,0] # place holder for hits
 			# player sets up their board by placing their ships
-			for i in range(5):
-				length, name,label = length_dict[i] # assigns variables
-				print('The',name,'takes up',length,'spaces.' )	
-				print('Enter the row and column for placement of your ship.')
-				coordinate,vertical = who_play(whos,num) # recieves coordinate
-				coordinate,vertical = placement_c(player_2,coordinate,length,vertical,whos) # checks for placment of ship is correct
-				place_ship(player_2,coordinate,length,vertical,label) # places ship
-				board(num) # prints board
+            for i in range(5):
+                length, name,label = length_dict[i] # assigns variables
+                print('The',name,'takes up',length,'spaces.' )	
+                print('Enter the row and column for placement of your ship.')
+                coordinate,vertical = who_play(whos,num) # recieves coordinate
+                coordinate,vertical = placement_c(player_2,coordinate,length,vertical,whos) # checks for placment of ship is correct
+                place_ship(player_2,coordinate,length,vertical,label) # places ship
+                board(num) # prints board
 			# for privacy of each player and gives option to end game
-			ready = input('Ready to switch? press Enter or enter end!')
-			if ready == 'end': #ends game
-				end([ready])
-			print(20*'\n')
+            ready = input('Ready to switch? press Enter or enter end!')
+            if ready == 'end': #ends game
+                end([ready])
+            print(20*'\n')
 			# does not move on until user is ready
-			switch = input('If you have swtiched say yes:')
+            switch = input('If you have swtiched say yes:')
 
 	###############################################################################################################	
 
 		# Player 1 turn to attack		
-		elif num != 1 and num %2==1:
-			board(num) # prints their board
-			print('Player 1 it is your turn!')
-			print('Enter the row and column for your attack!')
-			coord = who_play(whos,num)[0] # recieves coordinate for attack
-			w.PlaySound("pewpew", w.SND_FILENAME) # sound of shots being fired
-			correct_move(num,coord,whos) # attaks 
+        elif num != 1 and num %2==1:
+            board(num) # prints their board
+            print('Player 1 it is your turn!')
+            print('Enter the row and column for your attack!')
+            coord = who_play(whos,num)[0] # recieves coordinate for attack
+            #w.PlaySound("canon", w.SND_FILENAME) # sound of shots being fired
+            correct_move(num,coord,whos) # attaks 
 			# checks if player 1 has won
-			if end(player_2): 
-				break
+            if end(player_2): 
+                break
 			# privacy for player and gives option to end game
-			user = input('See if you hit or missed and press enter for player twos turn or enter end!')
-			if user == 'end': # ends game
-				end([user])
-			print(20*'\n')
+            user = input('See if you hit or missed and press enter for player twos turn or enter end!')
+            if user == 'end': # ends game
+                end([user])
+            print(20*'\n')
 			# does not move on until user is ready
-			switch = input('If you have swtiched say yes:')
+            switch = input('If you have swtiched say yes:')
 
 			
 	###############################################################################################################		
 		# player 2 turn to attack
-		elif num !=2 and num %2==0:	
-			board(num) # prints board
-			print('Player 2 it is your turn!')
-			print('Enter the row and column for your attack!')
-			coord = who_play(whos,num)[0] # recieves coordinate
-			correct_move(num,coord,whos) # places move
-			w.PlaySound("pewpew", w.SND_FILENAME) # attack noise
+        elif num !=2 and num %2==0:	
+            board(num) # prints board
+            print('Player 2 it is your turn!')
+            print('Enter the row and column for your attack!')
+            coord = who_play(whos,num)[0] # recieves coordinate
+            #w.PlaySound("canon", w.SND_FILENAME) # attack noise
+            correct_move(num,coord,whos) # places move
 			# checks if player 2 has won
-			if end(player_1):
-				break
+            if end(player_1):
+                break
 			# privacy for player and gives option to end game
-			user = input('See if you hit or missed and press enter for player ones turn or enter end!')
-			if user == 'end': # ends game
-				end([user])
-			print(20*'\n')
+            user = input('See if you hit or missed and press enter for player ones turn or enter end!')
+            if user == 'end': # ends game
+                end([user])
+            print(20*'\n')
 			# does not move on until user is ready
-			switch = input('If you have swtiched say yes:')
-main()
+            switch = input('If you have swtiched say yes:')
+def continue_game():
+    """
+	no parameters
+	continously plays game as long as user would like to
+	
+	"""
+    dict_start = {'yes','no'} # valid answers
+    start = input('Would you like to play battleship enter (yes or no)')
+    while start not in dict_start: # checks for valid answer
+        start = input('Would you like to play battleship enter (yes or no)')	
+    while start == 'yes': #if yes runs code
+        main() # 
+        start = input('Would you like to play again? enter (yes or no)')
+        while start not in dict_start:
+            start = input('Would you like to play battleship enter (yes or no)')
+    if start == 'no': # if no ends code
+       end(['end'])
+		
+continue_game()
+
+
+
+
