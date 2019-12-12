@@ -162,6 +162,7 @@ def moves(num,coord,for_next):
     param:
         num ~ int
         coord ~ int array
+	for_next ~ int
     returns:
         False
     Recieves coordinate and num to see whos playing. The function checks to see if the move entered has not been used before
@@ -193,7 +194,7 @@ def moves(num,coord,for_next):
     if player[coord[0]][coord[1]] != '.' and player[coord[0]][coord[1]]!= 'O' and player[coord[0]][coord[1]] != 'X':
         oppos[coord[0]][coord[1]] = 'X' 
         player[coord[0]][coord[1]] = 'X'
-        #w.PlaySound('Blowing up sound fades away', w.SND_FILENAME)        
+        w.PlaySound('Blowing up sound fades away', w.SND_FILENAME)        
         coord_holder = [coord[0],coord[1],for_next] # saves hit for computer
         if num %2 ==1: # if player 1
             new_coord_1 = coord_holder
@@ -445,7 +446,7 @@ def main():
 		'If you would like to end the game enter end twice to make sure when game ask for coordinates\n'
 
 		'Enjoy the game!')
-    #w.PlaySound('intro',w.SND_FILENAME) # plays giving time for user to read rules
+    w.PlaySound('intro',w.SND_FILENAME) # plays giving time for user to read rules
     dict_play = {'pvp','cvp','cvc'} # dictionary of valid entries of who is playing
 	# ask for correct entry of who will be playing
     global whos
@@ -567,7 +568,7 @@ def main():
             print('Player 1 it is your turn!')
             print('Enter the row and column for your attack!')
             coord = who_play(whos,num)[0] # recieves coordinate for attack
-            #w.PlaySound("canon", w.SND_FILENAME) # sound of shots being fired
+            w.PlaySound("canon", w.SND_FILENAME) # sound of shots being fired
             correct_move(num,coord,whos) # attaks 
 			# checks if player 1 has won
             if end(player_2): 
@@ -588,7 +589,7 @@ def main():
             print('Player 2 it is your turn!')
             print('Enter the row and column for your attack!')
             coord = who_play(whos,num)[0] # recieves coordinate
-            #w.PlaySound("canon", w.SND_FILENAME) # attack noise
+            w.PlaySound("canon", w.SND_FILENAME) # attack noise
             correct_move(num,coord,whos) # places move
 			# checks if player 2 has won
             if end(player_1):
