@@ -1,2 +1,2 @@
 # battleship
-Repository for Cedar's ENGR 102 group project!
+A text mode battleship clone written from scratch in python.
